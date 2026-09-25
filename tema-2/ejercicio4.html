@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de primas</title>
+</head>
+<body>
+
+<h1>Calculadora de primas</h1>
+
+<script>
+    let sueldo = parseFloat(prompt("Introduce el sueldo mensual:"));
+    let antiguedad = parseInt(prompt("Introduce la antigüedad:"));
+
+    let prima = 0;
+
+    if (antiguedad >= 10) {
+        if (sueldo < 750) {
+            prima = sueldo * 0.10;
+        } else {
+            prima = sueldo * 0.05;
+        }
+    }
+
+    let sueldoFinal = sueldo + prima;
+
+    document.write("<h2>Resultado</h2>");
+    document.write("<p>Sueldo: " + sueldo.toFixed(2) + " €</p>");
+    document.write("<p>Prima: " + prima.toFixed(2) + " €</p>");
+    document.write("<p><strong>Sueldo final: " + sueldoFinal.toFixed(2) + " €</strong></p>");
+</script>
+
+</body>
+</html>
