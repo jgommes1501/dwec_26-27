@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script>
+
+        let a = Number(prompt("Introducir número ?"));
+
+        let factPrimos = descomponerEnPrimos(a)
+
+        //console.log(descomponerEnPrimos(a))
+        alert("Factores primos de " + a + " : " + factPrimos.join('*'))
+
+
+        function descomponerEnPrimos(numero) {
+            if (numero <= 1 || !Number.isInteger(numero)) {
+                return "Ingresa un número entero mayor a 1.";
+            }
+
+            const factores = [];
+            let divisor = 2;
+            let n = numero;
+
+            while (n > 1) {
+                while (n % divisor === 0) {
+                    factores.push(divisor); // Guardamos el factor primo
+                    n = n / divisor;        // Reducimos el número
+                }
+                divisor++;
+            }
+
+            return factores;
+        }
+
+    </script>
+</head>
+
+<body>
+</body>
+</html>

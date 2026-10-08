@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 7</title>
+</head>
+<body>
+
+<script>
+
+    function factorial(numero) {
+        var resultado = 1;
+
+        for (var i = 1; i <= numero; i++) {
+            resultado = resultado * i;
+        }
+
+        return resultado;
+    }
+
+    function iniciar() {
+        var numero = Number(prompt("Introduce un número:"));
+
+        if (numero < 0) {
+            alert("No existe el factorial de números negativos.");
+        } else {
+            alert(factorial(numero));
+        }
+    }
+
+    iniciar();
+
+</script>
+
+</body>
+</html>

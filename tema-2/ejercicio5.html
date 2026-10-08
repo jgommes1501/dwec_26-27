@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 5</title>
+</head>
+<body>
+
+<script>
+
+    function ordenar(a, b, c) {
+        var menor, medio, mayor;
+
+        if (a <= b && a <= c) {
+            menor = a;
+
+            if (b <= c) {
+                medio = b;
+                mayor = c;
+            } else {
+                medio = c;
+                mayor = b;
+            }
+        } else if (b <= a && b <= c) {
+            menor = b;
+
+            if (a <= c) {
+                medio = a;
+                mayor = c;
+            } else {
+                medio = c;
+                mayor = a;
+            }
+        } else {
+            menor = c;
+
+            if (a <= b) {
+                medio = a;
+                mayor = b;
+            } else {
+                medio = b;
+                mayor = a;
+            }
+        }
+
+        alert(menor + " " + medio + " " + mayor);
+    }
+
+    function iniciar() {
+        var a = Number(prompt("Introduce el primer número:"));
+        var b = Number(prompt("Introduce el segundo número:"));
+        var c = Number(prompt("Introduce el tercer número:"));
+
+        ordenar(a, b, c);
+    }
+
+    iniciar();
+
+</script>
+
+</body>
+</html>

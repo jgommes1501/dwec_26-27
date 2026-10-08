@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 6</title>
+</head>
+<body>
+
+<script>
+
+    function calcular(a, b, c) {
+        var discriminante = b * b - 4 * a * c;
+
+        if (discriminante > 0) {
+            var x1 = (-b + Math.sqrt(discriminante)) / (2 * a);
+            var x2 = (-b - Math.sqrt(discriminante)) / (2 * a);
+
+            alert("x1 = " + x1 + "\nx2 = " + x2);
+        } else if (discriminante == 0) {
+            var x = -b / (2 * a);
+
+            alert("x1 = " + x + "\nx2 = " + x);
+        } else {
+            alert("No tiene soluciones reales");
+        }
+    }
+
+    function iniciar() {
+        var a = Number(prompt("Introduce el coeficiente a:"));
+        var b = Number(prompt("Introduce el coeficiente b:"));
+        var c = Number(prompt("Introduce el coeficiente c:"));
+
+        calcular(a, b, c);
+    }
+
+    iniciar();
+
+</script>
+
+</body>
+</html>

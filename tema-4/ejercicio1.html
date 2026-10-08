@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Media, Rango y Moda</title>
+</head>
+<body>
+
+<script>
+
+    function pedirValores() {
+        var valores = [];
+        var cantidad = parseInt(prompt("Introduce el número de valores:"));
+
+        if (isNaN(cantidad) || cantidad <= 0) {
+            alert("Error: número de valores no válido.");
+            return null;
+        }
+
+        for (var i = 0; i < cantidad; i++) {
+            var valor = parseInt(prompt("Introduce el valor " + (i + 1) + ":"));
+
+            if (isNaN(valor) || valor < 0) {
+                alert("Error: introduce un número entero positivo o cero.");
+                return null;
+            }
+
+            valores[i] = valor;
+        }
+
+        return valores;
+    }
+
+    function calcularMedia(valores) {
+        var suma = 0;
+
+        for (var i = 0; i < valores.length; i++) {
+            suma = suma + valores[i];
+        }
+
+        return suma / valores.length;
+    }
+
+    function calcularRango(valores) {
+        var menor = valores[0];
+        var mayor = valores[0];
+
+        for (var i = 1; i < valores.length; i++) {
+            if (valores[i] < menor) {
+                menor = valores[i];
+            }
+
+            if (valores[i] > mayor) {
+                mayor = valores[i];
+            }
+        }
+
+        return mayor - menor;
+    }
+
+    function calcularModa(valores) {
+        var moda = valores[0];
+        var mayorCantidad = 0;
+
+        for (var i = 0; i < valores.length; i++) {
+            var cantidad = 0;
+
+            for (var j = 0; j < valores.length; j++) {
+                if (valores[i] == valores[j]) {
+                    cantidad++;
+                }
+            }
+
+            if (cantidad > mayorCantidad) {
+                mayorCantidad = cantidad;
+                moda = valores[i];
+            }
+        }
+
+        return moda;
+    }
+
+    function mostrarResultados(valores) {
+        alert(
+            "Media: " + calcularMedia(valores) +
+            "\nRango: " + calcularRango(valores) +
+            "\nModa: " + calcularModa(valores)
+        );
+    }
+
+    var valores = pedirValores();
+
+    if (valores != null) {
+        mostrarResultados(valores);
+    }
+
+</script>
+
+</body>
+</html>
