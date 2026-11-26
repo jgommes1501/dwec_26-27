@@ -113,7 +113,88 @@
             }
         }
 
-        main();
+        class NotaAlumno {
+            #dniAlumno;
+            #nota;
+            #modulo;
+
+            constructor(dniAlumno, modulo = "entornoCliente") {
+                this.#dniAlumno = dniAlumno;
+                this.#nota = 0;
+
+                if (modulo === "entornoCliente" ||
+                    modulo === "entornoServidor" ||
+                    modulo === "programacion") {
+                    this.#modulo = modulo;
+                } else {
+                    this.#modulo = "entornoCliente";
+                }
+            }
+
+            get dniAlumno() {
+                return this.#dniAlumno;
+            }
+
+            get nota() {
+                return this.#nota;
+            }
+
+            get modulo() {
+                return this.#modulo;
+            }
+
+            modificarNota(valor) {
+                this.#nota += valor;
+
+                if (this.#nota > 10) {
+                    this.#nota = 10;
+                }
+
+                if (this.#nota < 0) {
+                    this.#nota = 0;
+                }
+            }
+        }
+
+        class Notas {
+            #listaNotas;
+
+            constructor() {
+                this.#listaNotas = [];
+            }
+
+            agregarNota(notaAlumno) {
+                for (const nota of this.#listaNotas) {
+                    if (nota.dniAlumno === notaAlumno.dniAlumno &&
+                        nota.modulo === notaAlumno.modulo) {
+                        return false;
+                    }
+                }
+
+                this.#listaNotas.push(notaAlumno);
+                return true;
+            }
+
+            obtenerResumenPorTipo() {
+                let resumen = {entornoCliente: 0, entornoServidor: 0, programacion: 0};
+                for (const v of this.#listaNotas) {
+                    switch (v.modulo) {
+                        case "entornoCliente":
+                            resumen.entornoCliente++;
+                            break;
+                        case "entornoServidor":
+                            resumen.entornoServidor++;
+                            break;
+                        case "programacion":
+                            resumen.programacion++;
+                            break;
+                    }
+                }
+                return resumen;
+            }
+
+
+            main();
     </script>
 </head>
 <body>

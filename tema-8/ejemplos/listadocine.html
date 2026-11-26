@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Películas y reparto</title>
+</head>
+<body>
+
+<h1>Películas y actores de reparto</h1>
+
+<script>
+
+    let cadena = `
+        <cine>
+            <película categoría="drama">
+                <título idioma="inglés">Forrest Gump</título>
+                <reparto>Tom Hanks</reparto>
+            </película>
+
+            <película categoría="acción">
+                <título idioma="inglés">Gladiator</título>
+                <reparto>Russell Crowe</reparto>
+            </película>
+        </cine>`;
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(cadena, "text/xml");
+
+    let x = xmlDoc.getElementsByTagName("película");
+    let txt = "";
+    for (let i of x) {
+        txt += i.getElementsByTagName("título")[0].childNodes[0].nodeValue + "\n";
+        txt += i.getElementsByTagName("reparto")[0].childNodes[0].nodeValue + "\n\n";
+    }
+
+    alert(txt);
+
+</script>
+
+</body>
+</html>

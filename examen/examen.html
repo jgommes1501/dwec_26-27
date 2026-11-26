@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba - Ejercicio 1: Notas de Vehículos</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .panel { border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 5px; background-color: #fafafa; }
+        h1, h2 { color: #333; }
+        input, select, button { padding: 8px; margin: 5px 0; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #0056b3; color: white; cursor: pointer; border: none; }
+        button:hover { background-color: #004494; }
+        #consola { background: #222; color: #0f0; padding: 15px; border-radius: 5px; font-family: monospace; min-height: 100px; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Notas asignaturas (Prueba)</h1>
+
+    <div class="panel">
+        <h2>1. Poner Nota</h2>
+        <input type="text" id="inCodAlumno" placeholder="Código de alumno" />
+        <select id="inTipo">
+            <option value="entornoCliente">Entorno Cliente</option>
+            <option value="entornoServidor">Entorno Servidor</option>
+            <option value="programacion">Programación</option>
+            <option value="invalido">Tipo Inválido (Prueba)</option>
+        </select>
+        <button onclick="uiAgregarNota()">Añadir nota</button>
+    </div>
+
+    <div class="panel">
+        <h2>2. Modificar Nota</h2>
+        <select id="selNotaAlumno">
+            <option value="">-- Selecciona Alumno y Módulo --</option>
+        </select>
+        <input type="number" id="inNota" placeholder="Suma o resta nota" />
+        <button onclick="uiModificarNota()">Modificar nota</button>
+    </div>
+
+    <div class="panel">
+        <h2>3. Consulta de estudiantes</h2>
+        <button onclick="uiVerResumen()">Ver Resumen por Módulo</button>
+        <br><br>
+        <input type="number" id="inFiltroNotas" placeholder="Nota máxima" value="10"/>
+        <button onclick="uiVerPorDebajoNota()">Ver notas por debajo</button>
+    </div>
+
+    <h2>Resultados</h2>
+    <div id="consola">Esperando acciones...</div>
+</div>
+
+<script>
+    // =============================================
+    // INICIO DEL CÓDIGO DE LAS CLASES DEL EJERCICIO
+    // =============================================
+
+    //Clase NotaAlumnos con los atributos privados #
+    class NotaAlumno {
+        #dniAlumno;
+        #nota;
+        #modulo;
+        //Recibimos el DNI y el Modulo de cada Alumno
+        constructor(dniAlumno, modulo = "entornoCliente") {
+            this.#dniAlumno = dniAlumno;
+            this.#nota = 0;
+
+            if (modulo === "entornoCliente" ||
+                modulo === "entornoServidor" ||
+                modulo === "programacion") {
+                this.#modulo = modulo;
+            } else {
+                this.#modulo = "entornoCliente";
+            }
+        }
+        // Metodos Públicos
+        get dniAlumno() {
+            return this.#dniAlumno;
+        }
+
+        get nota() {
+            return this.#nota;
+        }
+
+        get modulo() {
+            return this.#modulo;
+        }
+        /*
+           Aqui modificamos la con el valor introducido, si el valor es positivo,
+           la nueva nota no debera ser superior a 10 y si es negativo,
+           no deberá ser inferior a 0.
+        */
+        modificarNota(valor) {
+            this.#nota += valor;
+
+            if (this.#nota > 10) {
+                this.#nota = 10;
+            }
+
+            if (this.#nota < 0) {
+                this.#nota = 0;
+            }
+        }
+    }
+    // Clase Notas con los atributos privados
+    class Notas {
+        #listaNotas;
+
+        constructor() {
+            this.#listaNotas = [];
+        }
+        /* Añadimos la nota del alumno a la lista de notas mediante
+           la estructura de control adecuada que no exista una nota para este alumno.
+           Retorna true si se añadio o false si ya existía.
+        */
+
+        agregarNota(notaAlumno) {
+            for (const nota of this.#listaNotas) {
+                if (nota.dniAlumno === notaAlumno.dniAlumno &&
+                    nota.modulo === notaAlumno.modulo) {
+                    return false;
+                }
+            }
+
+            this.#listaNotas.push(notaAlumno);
+            return true;
+        }
+        // Recorre las notas y retorna un objeto con el encuentro total de NotaAlumnos
+        obtenerResumenPorTipo() {
+            let resumen = {entornoCliente: 0, entornoServidor: 0, programacion: 0};
+            for (const v of this.#listaNotas) {
+                switch (v.modulo) {
+                    case "entornoCliente":
+                        resumen.entornoCliente++;
+                        break;
+                    case "entornoServidor":
+                        resumen.entornoServidor++;
+                        break;
+                    case "programacion":
+                        resumen.programacion++;
+                        break;
+                }
+            }
+            return resumen;
+        }
+        //Retornamos un array cuya nota sea inferior al valor recibido
+        obtenerNotasPorDebajo(notaReferencia) {
+            return this.#listaNotas.filter(nota => nota.nota < notaReferencia);
+        }
+    }
+
+    // =============================================
+    // FIN DEL CÓDIGO DE LAS CLASES DEL EJERCICIO
+    // =============================================
+
+    // ==========================================
+    // LÓGICA DE LA INTERFAZ (UI) -> NO MODIFICAR
+    // ==========================================
+    const misNotas = new Notas();
+    const notasRegistradas = {}; // Para guardar las referencias de los objetos
+
+    function log(mensaje) {
+        document.getElementById('consola').innerText = mensaje + "\n\n" + document.getElementById('consola').innerText;
+    }
+
+    function uiAgregarNota() {
+        const dniAlumno = document.getElementById('inCodAlumno').value.trim();
+        const modulo = document.getElementById('inTipo').value;
+
+        if (!dniAlumno) return alert("Introduce un estudiante");
+
+        const nuevaNota = new NotaAlumno(dniAlumno, modulo);
+        const exito = misNotas.agregarNota(nuevaNota);
+
+        if (exito) {
+            notasRegistradas[dniAlumno+modulo] = nuevaNota;
+            actualizarSelectNotas();
+            log(`[Éxito] Nota para [${dniAlumno}] en el módulo '${nuevaNota.modulo}' añadida.`);
+        } else {
+            log(`[Error] Ya existe una nota para ese módulo para [${dniAlumno}].`);
+        }
+    }
+
+    function actualizarSelectNotas() {
+        const select = document.getElementById('selNotaAlumno');
+        select.innerHTML = '<option value="">-- Selecciona Alumno y Módulo --</option>';
+        for (const vNota in notasRegistradas) {
+            select.innerHTML += `<option value="${vNota}">${notasRegistradas[vNota].dniAlumno} (${notasRegistradas[vNota].modulo})</option>`;
+        }
+    }
+
+    function uiModificarNota() {
+        const notaAModificar = document.getElementById('selNotaAlumno').value;
+        const variacion = parseFloat(document.getElementById('inNota').value);
+
+        if (!notaAModificar) return alert("Selecciona una nota");
+        if (isNaN(variacion)) return alert("Introduce un número válido para sumar o restar");
+
+        const nota = notasRegistradas[notaAModificar];
+        nota.modificarNota(variacion);
+        log(`[Modificación] La Nota [${notaAModificar}] ha cambiado en ${variacion} puntos. Nota actual: ${nota.nota}.`);
+    }
+
+    function uiVerResumen() {
+        const resumen = misNotas.obtenerResumenPorTipo();
+        log(`[Resumen por módulo]\nEntorno Cliente: ${resumen.entornoCliente}\nEntorno Servidor: ${resumen.entornoServidor}\nProgramación: ${resumen.programacion}`);
+    }
+
+    function uiVerPorDebajoNota() {
+        const limite = parseFloat(document.getElementById('inFiltroNotas').value) || 0;
+        const lista = misNotas.obtenerNotasPorDebajo(limite);
+
+        if (lista.length === 0) {
+            log(`[Filtro] Ninguna nota por debajo de ${limite}.`);
+        } else {
+            let mensaje = `[Filtro] Notas por debajo de ${limite} :\n`;
+            lista.forEach(n => {
+                mensaje += ` - [${n.dniAlumno}] (${n.modulo}): ${n.nota} \n`;
+            });
+            log(mensaje);
+        }
+    }
+</script>
+
+</body>
+</html>
